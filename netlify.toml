@@ -5,5 +5,3 @@
 [dev]
   command = "next dev"
 
-[functions]
-  directory = "backend_python"
