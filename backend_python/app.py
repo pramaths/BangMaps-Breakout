@@ -28,54 +28,54 @@ def find_nearest_lake(center_lat: float, center_lng: float) -> str:
     """
     Use PPLX API to find the nearest lake name
     """
-    # PPLX_API_KEY = "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"
-    # headers = {
-    #     'Authorization': f'Bearer {PPLX_API_KEY}',
-    #     'Content-Type': 'application/json'
-    # }
+    PPLX_API_KEY = os.getenv("PPLX_API_KEY")
+    headers = {
+        'Authorization': f'Bearer {PPLX_API_KEY}',
+        'Content-Type': 'application/json'
+    }
     
-    # prompt = f"Given the latitude {center_lat} and longitude {center_lng} , what is the name of the nearest lake or water body? Return just the lake name in one word"
+    prompt = f"Given the latitude {center_lat} and longitude {center_lng} , what is the name of the nearest lake or water body? Return just the lake name in one word"
     
-    # payload = {
-    #     "model": "sonar",
-    #     "messages": [
-    #         {
-    #             "role": "system",
-    #             "content": "Be precise and concise, give just one word answer."
-    #         },
-    #         {
-    #             "role": "user",
-    #             "content": prompt
-    #         }
-    #     ],
-    #     "max_tokens": 123,
-    #     "temperature": 0.2,
-    #     "top_p": 0.9,
-    #     "stream": False,
-    #     "presence_penalty": 0,
-    #     "frequency_penalty": 1
-    # }
+    payload = {
+        "model": "sonar",
+        "messages": [
+            {
+                "role": "system",
+                "content": "Be precise and concise, give just one word answer."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        "max_tokens": 123,
+        "temperature": 0.2,
+        "top_p": 0.9,
+        "stream": False,
+        "presence_penalty": 0,
+        "frequency_penalty": 1
+    }
     
-    # try:
-    #     response = requests.post(
-    #         'https://api.perplexity.ai/chat/completions',
-    #         headers=headers,
-    #         json=payload
-    #     )
+    try:
+        response = requests.post(
+            'https://api.perplexity.ai/chat/completions',
+            headers=headers,
+            json=payload
+        )
         
-    #     if response.status_code == 200:
-    #         response_json = response.json()
-    #         # Extract just the lake name from the response
-    #         lake_name = response_json['choices'][0]['message']['content'].strip()
-    #         print(f"Found lake name: {lake_name}")
-    #         return lake_name
-    #     else:
-    #         print(f"API Error: {response.text}")
-    #         return None
-    # except Exception as e:
-    #     print(f"Error calling PPLX API: {str(e)}")
-    #     return None
-    return "ulsoor"
+        if response.status_code == 200:
+            response_json = response.json()
+            # Extract just the lake name from the response
+            lake_name = response_json['choices'][0]['message']['content'].strip()
+            print(f"Found lake name: {lake_name}")
+            return lake_name
+        else:
+            print(f"API Error: {response.text}")
+            return None
+    except Exception as e:
+        print(f"Error calling PPLX API: {str(e)}")
+        return None
+    # return "ulsoor"
 
 def get_water_quality_data(lake_name: str) -> Dict:
     """
