@@ -1,7 +1,7 @@
 [build]
-  command = "npm install --legacy-peer-deps && next build"
+  install_command = "npm install --legacy-peer-deps"
+  command = "next build"
   publish = ".next"
 
 [dev]
   command = "next dev"
-
