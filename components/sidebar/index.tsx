@@ -40,7 +40,7 @@ export default function Sidebar({ messages, children, ShowMessage, onSubmitFormC
     <div className="flex h-screen">
       <div className="w-1/4 border-r">
         <div className="p-4">
-          <h2 className="text-2xl bg-yellow-500 p-2 text-center rounded-sm font-bold">Maplysis</h2>
+          <h2 className="text-2xl bg-yellow-500 p-2 text-center rounded-sm font-bold">BangMaps</h2>
           <div className="p-2 flex flex-col items-start space-y-2">
             <label className="flex items-center space-x-2">
               <FaMapMarkerAlt size={24} className="text-blue-500 w-4 h-4" />

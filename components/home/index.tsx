@@ -25,10 +25,9 @@ export default function Home({ runQuery }: HomeProps) {
   const analyserRef = useRef<AnalyserNode | null>(null);
 
   const predefinedQueries = [
-    "A house owner from 1st cross, sector 7, hsr layout, Bengaluru has requested for an insurance cover of 2Crore Rs for his 3 storied building, show me the analysis for it and locate it on the map",
-    "I want to invest in real estate, preferrably a Villa, analyse the best investment opportunities in Mangalore and locate them on the map"
+    "A house owner from 1st cross, sector 7, hsr layout, Bengaluru has requested for an insurance cover of 2Crore Rs for his 3 storied building, give me the risk analysis report for it",
+    "I am planning to buy a 3bhk in malleshwaram 6th main, bangalore, give me the risk analysis report for it and locate it on the map"
   ];
-
   const selectPredefinedQuery = (predefinedQuery: string) => {
     setQuery(predefinedQuery);
     runQuery({ query: predefinedQuery, apiKey: getApiKey() });

@@ -191,7 +191,7 @@ export default function Chat() {
   return (
     <>
       <Head>
-        <title>Maplysis</title>
+        <title>BangMaps</title>
       </Head>
       <div className={`mode-${mode}`}>
         {mode === 'home' && (
