@@ -31,7 +31,7 @@ export class BangmapsClient {
    */
   getStatePDA(): [PublicKey, number] {
     return PublicKey.findProgramAddressSync(
-      [Buffer.from("state")],
+      [Buffer.from("state"), ],
       this.program.programId
     );
   }
@@ -85,28 +85,24 @@ export class BangmapsClient {
     return await this.provider.sendAndConfirm(tx, []);
   }
 
-  /**
-   * Pay for a search operation
-   * @returns Transaction signature
-   */
-  async payForSearch(): Promise<string> {
-    const user = this.wallet.publicKey;
-    const [statePDA] = this.getStatePDA();
-    const [vaultPDA] = this.getVaultPDA(statePDA);
-    const [contributorPDA] = this.getContributorPDA(statePDA, user);
-
-    const tx = await this.program.methods
+  public async payForSearch(): Promise<PublicKey> {
+    const userPubkey = this.provider.wallet.publicKey;
+    const [statePda, _] = this.getStatePDA();
+    const [vaultPda, _bump] = this.getVaultPDA(statePda);
+    const [contribPda, _cBump] = this.getContributorPDA(statePda, userPubkey);
+console.log(userPubkey, statePda, vaultPda, contribPda);
+    await this.program.methods
       .payForSearch()
       .accountsStrict({
-        user: user,
-        state: statePDA,
-        vault: vaultPDA,
-        contributor: contributorPDA,
+        user: userPubkey,
+        state: statePda,
+        vault: vaultPda,
+        contributor: contribPda,
         systemProgram: SystemProgram.programId,
       })
-      .transaction();
+      .rpc();
 
-    return await this.provider.sendAndConfirm(tx);
+    return contribPda;
   }
 
   /**

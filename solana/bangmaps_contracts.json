@@ -1,5 +1,5 @@
 {
-    "address": "DbQ1WFDhHd8gxd69STHnkQEcS82MvAXDSrNSwkTHrGKD",
+    "address": "2TzkvVytX8Y1FLbE4yaSUMHtXWZzuAay75k5zoWB8Sta",
     "metadata": {
       "name": "bangmaps_contracts",
       "version": "0.1.0",
@@ -387,6 +387,10 @@
             },
             {
               "name": "vault_bump",
+              "type": "u8"
+            },
+            {
+              "name": "state_bump",
               "type": "u8"
             }
           ]

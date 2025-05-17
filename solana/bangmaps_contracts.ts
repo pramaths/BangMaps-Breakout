@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/bangmaps_contracts.json`.
  */
 export type BangmapsContracts = {
-    "address": "DbQ1WFDhHd8gxd69STHnkQEcS82MvAXDSrNSwkTHrGKD",
+    "address": "2TzkvVytX8Y1FLbE4yaSUMHtXWZzuAay75k5zoWB8Sta",
     "metadata": {
       "name": "bangmapsContracts",
       "version": "0.1.0",
@@ -393,6 +393,10 @@ export type BangmapsContracts = {
             },
             {
               "name": "vaultBump",
+              "type": "u8"
+            },
+            {
+              "name": "stateBump",
               "type": "u8"
             }
           ]

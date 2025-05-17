@@ -30,7 +30,7 @@ export default function Home({ runQuery }: HomeProps) {
   const { connection } = useConnection();
   const wallet = useWallet();
   const { publicKey, connected, disconnect } = wallet;
-  const sdk = new BangmapsClient(wallet as any, { connection } as any)
+  const sdk = new BangmapsClient(wallet as any, connection)
 
   const predefinedQueries = [
     "A house owner from 1st cross, sector 7, hsr layout, Bengaluru has requested for an insurance cover of 2Crore Rs for his 3 storied building, give me the risk analysis report for it",
@@ -52,7 +52,6 @@ export default function Home({ runQuery }: HomeProps) {
 
   const submitForm = async () => {
     try {
-      // Pay for search using the Solana SDK before executing the query
       await sdk.payForSearch();
       
       // After payment is successful, execute the search query
