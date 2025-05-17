@@ -12,8 +12,6 @@ import os
 from openai import OpenAI
 import base64
 import uuid
-from elevenlabs import ElevenLabs, VoiceSettings
-from elevenlabs.client import ElevenLabs
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, 
@@ -345,64 +343,6 @@ def generate_verdict():
         verdict = completion.choices[0].message.content
         verdict = "Based on the available data for the Ulsoor Lake area in Bengaluru, this location presents a mixed profile for potential homebuyers. While the area has a relatively deep water body (6.5-7.0 meters) with concerning water quality metrics (high pH of 10.0 and turbidity of 157.0), and the lake is primarily designated for industrial and irrigation purposes rather than recreational use, these environmental factors don't necessarily make it uninhabitable but rather suggest the need for proper water treatment systems in any residential property. The presence of cybercrime incidents, while concerning, is fairly typical for an urban Bengaluru neighborhood and can be mitigated with standard security measures. If you're considering purchasing property in this area, it would be a viable option provided you're willing to invest in water filtration systems, ensure the property is elevated enough to avoid potential flooding issues, and implement basic urban security measures - though it would be wise to negotiate the property price taking these factors into consideration and conduct thorough due diligence including site visits at different times of day and consultations with local residents."
         print(f"Generated verdict: {verdict}")
-
-        # Initialize ElevenLabs client
-        eleven_labs = ElevenLabs(
-            api_key="sk_9f317d2140c753e1a3b2137121d39283622419d6784e943e"
-        )
-
-        try:
-            # Generate audio using ElevenLabs
-            audio_response = eleven_labs.text_to_speech.convert(
-                voice_id="pNInz6obpgDQGcFmaJgB",  # Adam voice
-                output_format="mp3_22050_32",
-                text=verdict,
-                model_id="eleven_turbo_v2_5",
-                voice_settings=VoiceSettings(
-                    stability=0.0,
-                    similarity_boost=1.0,
-                    style=0.0,
-                    use_speaker_boost=True,
-                )
-            )
-
-            # Generate a temporary file name
-            temp_file = f"temp_{uuid.uuid4()}.mp3"
-
-            try:
-                # Save the audio temporarily and convert to base64
-                with open(temp_file, "wb") as f:
-                    for chunk in audio_response:
-                        if chunk:
-                            f.write(chunk)
-
-                # Read the file and convert to base64
-                with open(temp_file, "rb") as f:
-                    audio_base64 = base64.b64encode(f.read()).decode('utf-8')
-
-                # Clean up the temporary file
-                os.remove(temp_file)
-
-                return jsonify({
-                    'status': 'success',
-                    'data': verdict,
-                    'audio': audio_base64
-                })
-
-            except Exception as file_error:
-                print(f"File handling error: {str(file_error)}")
-                if os.path.exists(temp_file):
-                    os.remove(temp_file)
-                raise file_error
-
-        except Exception as audio_error:
-            print(f"Audio generation error: {str(audio_error)}")
-            return jsonify({
-                'status': 'success',
-                'data': verdict,
-                'audio': None,
-                'audio_error': f"Failed to generate audio: {str(audio_error)}"
-            })
 
     except Exception as e:
         print(f"Verdict generation error: {str(e)}")

@@ -5,7 +5,11 @@ import { Input } from "@/components/ui/input";
 import { useRef, useState, useEffect } from 'react';
 import OpenAI from "openai";
 import { RecordingDialog } from "@/components/recording-dialog";
-import { SearchIcon, MicIcon } from "lucide-react";
+import { SearchIcon, MicIcon, WalletIcon } from "lucide-react";
+import { BangmapsClient } from "../../solana/sdk";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { PublicKey } from "@solana/web3.js"; 
 
 export interface HomeProps {
   runQuery: (data: { query: string; apiKey: string }) => void;
@@ -23,19 +27,41 @@ export default function Home({ runQuery }: HomeProps) {
   const silenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
+  const { connection } = useConnection();
+  const wallet = useWallet();
+  const { publicKey, connected, disconnect } = wallet;
+  const sdk = new BangmapsClient(wallet as any, { connection } as any)
 
   const predefinedQueries = [
     "A house owner from 1st cross, sector 7, hsr layout, Bengaluru has requested for an insurance cover of 2Crore Rs for his 3 storied building, give me the risk analysis report for it",
     "I am planning to buy a 3bhk in malleshwaram 6th main, bangalore, give me the risk analysis report for it and locate it on the map"
   ];
-  const selectPredefinedQuery = (predefinedQuery: string) => {
-    setQuery(predefinedQuery);
-    runQuery({ query: predefinedQuery, apiKey: getApiKey() });
+  const selectPredefinedQuery = async (predefinedQuery: string) => {
+    try {
+      // Pay for search using the Solana SDK before executing the query
+      await sdk.payForSearch();
+      
+      // After payment is successful, execute the search query
+      setQuery(predefinedQuery);
+      runQuery({ query: predefinedQuery, apiKey: getApiKey() });
+    } catch (error) {
+      console.error('Error during search payment:', error);
+      alert('Failed to process payment for search. Please try again.');
+    }
   };
 
-  const submitForm = () => {
-    const apiKey = getApiKey();
-    runQuery({ query, apiKey });
+  const submitForm = async () => {
+    try {
+      // Pay for search using the Solana SDK before executing the query
+      await sdk.payForSearch();
+      
+      // After payment is successful, execute the search query
+      const apiKey = getApiKey();
+      runQuery({ query, apiKey });
+    } catch (error) {
+      console.error('Error during search payment:', error);
+      alert('Failed to process payment for search. Please try again.');
+    }
   };
 
   const toggleRowSelection = (index: number) => {
@@ -218,11 +244,22 @@ export default function Home({ runQuery }: HomeProps) {
           backgroundRepeat: 'no-repeat'
         }}
       />
+      <div className="fixed top-4 left-4 z-20">
+        <Button 
+          className="bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md py-2 px-4 shadow-lg transition-all duration-200 hover:shadow-xl"
+          onClick={() => window.open('/contributor', '_blank')}
+        >
+          Be a Contributor
+        </Button>
+      </div>
       <div className="relative z-10 w-full items-center">
      
       <div className="w-full max-w-2xl p-6 mx-auto relative z-20">
-      <div className="backdrop-blur-xl bg-black/50 p-6 rounded-2xl border border-black/20 shadow-2xl">
+      <div className="backdrop-blur-lg bg-black/50 p-6 rounded-2xl border border-black/10 shadow-2xl">
       <div className="flex flex-col items-center space-y-4">
+        <div className="bg-white p-2 rounded-full flex justify-center items-center w-full">
+            <h1 className="text-4xl font-bold text-blue-600 text-center mb-0">BANG MAPS</h1>
+        </div>
             <div className="flex items-center space-x-2 w-full">
               <Input
                 className="w-full bg-black/10 border-black/20 text-black placeholder-gray-400 focus:ring-purple-500 focus:border-purple-500"
@@ -246,6 +283,9 @@ export default function Home({ runQuery }: HomeProps) {
               >
                 <SearchIcon className="w-5 h-5" />
               </Button>
+            </div>
+            <div className="ml-4">
+              <WalletMultiButton className="bg-purple-600 hover:bg-purple-700 text-white rounded-md py-2 px-4 text-sm font-medium transition-colors duration-200" />
             </div>
           </div>
         </div>

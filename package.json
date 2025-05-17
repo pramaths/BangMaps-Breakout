@@ -10,8 +10,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
     "@mapbox/leaflet-omnivore": "^0.3.4",
     "@modelcontextprotocol/sdk": "^1.10.2",
+    "@project-serum/anchor": "^0.26.0",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-slot": "^1.0.2",
     "@react-three/drei": "^9.99.0",
@@ -19,6 +21,12 @@
     "@rjsf/core": "^5.16.1",
     "@rjsf/utils": "^5.16.1",
     "@rjsf/validator-ajv8": "^5.16.1",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/wallet-adapter-base": "^0.9.26",
+    "@solana/wallet-adapter-react": "^0.15.38",
+    "@solana/wallet-adapter-react-ui": "^0.9.38",
+    "@solana/wallet-adapter-wallets": "^0.19.36",
+    "@solana/web3.js": "^1.98.2",
     "@types/three": "^0.160.0",
     "@vercel/analytics": "^1.1.2",
     "@xmldom/xmldom": "^0.8.10",
