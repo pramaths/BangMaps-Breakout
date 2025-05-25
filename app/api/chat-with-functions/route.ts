@@ -4,11 +4,10 @@ import {
   // experimental_StreamData,
 } from "ai";
 import OpenAI from "openai";
-import type { ChatCompletionCreateParams } from "openai/resources/chat";
 
 export const runtime = "edge";
 
-const functions: ChatCompletionCreateParams.Function[] = [
+const functions: OpenAI.Chat.ChatCompletionCreateParams.Function[] = [
   {
     name: "create_simple_form",
     description:
